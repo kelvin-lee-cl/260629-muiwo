@@ -17,11 +17,17 @@ dotenv.config({
 
 const app = express();
 const port = Number(process.env.PORT ?? 10000);
-const corsOrigin = process.env.CORS_ORIGIN ?? "http://localhost:3000";
+const corsOrigins = (
+  process.env.CORS_ORIGIN ??
+  "http://localhost:3000,http://localhost:3001,https://260629-muiwo.vercel.app"
+)
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 app.use(
   cors({
-    origin: corsOrigin,
+    origin: corsOrigins,
     methods: ["GET", "POST", "OPTIONS"],
   }),
 );

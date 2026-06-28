@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: schoolquest-ai
+    name: 260629-muiwo-ai
     runtime: node
     rootDir: server
     buildCommand: npm install && npm run build

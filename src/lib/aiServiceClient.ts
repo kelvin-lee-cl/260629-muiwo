@@ -1,8 +1,4 @@
-import {
-  getAiServiceUrl,
-  isAiServiceConfigured,
-  AI_SERVICE_ROUTES,
-} from "@/lib/aiConfig";
+import { isAiServiceConfigured, AI_SERVICE_ROUTES } from "@/lib/aiConfig";
 
 async function parseError(response: Response): Promise<string> {
   try {
@@ -18,14 +14,26 @@ async function postAi<T>(
   path: string,
   body: Record<string, string>,
 ): Promise<T> {
-  const response = await fetch(`${getAiServiceUrl()}${path}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(body),
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(path, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error(
+        "無法連接 AI 服務。請確認 AI worker 正在運行（本地：cd server && npm run dev）。",
+      );
+    }
+
+    throw error;
+  }
 
   if (!response.ok) {
     throw new Error(await parseError(response));
