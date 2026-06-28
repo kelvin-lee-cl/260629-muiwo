@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: schoolquest-ai
+    runtime: node
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: RECRAFT_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: SEEDANCE_API_KEY
+        sync: false
+      - key: SEEDANCE_API_BASE_URL
+        sync: false
+      - key: SEEDANCE_MODEL
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
