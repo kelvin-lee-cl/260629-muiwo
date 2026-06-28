@@ -65,6 +65,20 @@ function LoginPageContent() {
       router.push("/dashboard");
     } catch (submitError) {
       console.error(submitError);
+
+      if (
+        submitError instanceof FirebaseError &&
+        submitError.code === "auth/admin-restricted-operation"
+      ) {
+        setError("無法登入：Firebase 尚未啟用 Anonymous 登入。請在 Firebase Console → Authentication → Sign-in method 開啟 Anonymous。");
+        return;
+      }
+
+      if (submitError instanceof Error && submitError.message) {
+        setError(submitError.message);
+        return;
+      }
+
       setError("無法登入，請再試一次。");
     } finally {
       setSubmitting(false);
@@ -104,7 +118,7 @@ function LoginPageContent() {
         loginError.code === "auth/unauthorized-domain"
       ) {
         setAdminError(
-          "此網域未獲 Firebase 授權。請在 Firebase Console → Authentication → Authorized domains 加入 260623-maryknoll.vercel.app。",
+          "此網域未獲 Firebase 授權。請在 Firebase Console → Authentication → Authorized domains 加入此網站的網域。",
         );
         return;
       }
@@ -139,7 +153,7 @@ function LoginPageContent() {
               htmlFor="student-id"
               className="mb-3 block text-base font-medium text-slate-700 sm:text-lg"
             >
-              請輸入班別及學號（例如 4D01）
+              請輸入班別及學號（例如 P101、4D01）
             </label>
             <input
               id="student-id"
@@ -151,7 +165,7 @@ function LoginPageContent() {
               maxLength={4}
               value={input}
               onChange={handleInputChange}
-              placeholder="4D01"
+              placeholder="P101"
               className="w-full rounded-2xl border border-sky-200 bg-sky-50/50 px-5 py-4 text-center text-2xl font-semibold tracking-widest text-slate-900 outline-none transition focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100"
             />
           </div>

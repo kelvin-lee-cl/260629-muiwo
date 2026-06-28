@@ -138,7 +138,7 @@ export function RegisterStudentsPanel({
       const maxStudents = Number.parseInt(row.maxStudents, 10);
 
       if (!isValidClassCode(classCode)) {
-        onError(`Invalid class "${row.classCode}". Use format like 1A or 4D.`);
+        onError(`Invalid class "${row.classCode}". Use format like P1, 1A, 4D, K2, or K3.`);
         return;
       }
 
@@ -394,8 +394,8 @@ export function RegisterStudentsPanel({
               Add classes
             </h3>
             <p className="mt-3 text-slate-600">
-              Enter each class (e.g. 1A, 1B) and how many students to create.
-              IDs are generated automatically as 1A01, 1A02, and so on.
+              Enter each class (e.g. P1, P2, 1A, K2) and how many students to
+              create. IDs are generated automatically as P101, 1A01, K201, and so on.
             </p>
 
             <div className="mt-6 space-y-3">
@@ -414,7 +414,7 @@ export function RegisterStudentsPanel({
                       onChange={(event) =>
                         updateClassRow(row.key, "classCode", event.target.value)
                       }
-                      placeholder="1A"
+                      placeholder="P1 / 1A"
                       maxLength={2}
                       className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-mono text-base uppercase outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100"
                     />

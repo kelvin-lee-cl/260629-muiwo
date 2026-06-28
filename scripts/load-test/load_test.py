@@ -31,7 +31,7 @@ from pathlib import Path
 from typing import Any
 
 # ============ CONFIGURATION ============
-VERCEL_URL = "https://260623-maryknoll.vercel.app"
+VERCEL_URL = "https://260629-muiwo.vercel.app"
 AI_SERVICE_URL = "https://schoolquest-ai.onrender.com"
 
 # Booth or checkpoint to claim (e.g. B01, C01)

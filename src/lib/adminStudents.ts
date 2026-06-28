@@ -164,7 +164,7 @@ export async function bulkRegisterStudentsByClass(
     if (!isValidClassCode(classCode)) {
       invalidClasses.push({
         classCode,
-        reason: "Class must be grade 1–6 plus one letter (e.g. 1A).",
+        reason: "Class must be P1–P6, K2/K3, or grade 1–6 plus one letter (e.g. 1A).",
       });
       continue;
     }

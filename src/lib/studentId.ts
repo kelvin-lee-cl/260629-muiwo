@@ -1,5 +1,6 @@
-const STUDENT_ID_PATTERN = /^[1-6][A-Z]\d{2}$/;
-const CLASS_CODE_PATTERN = /^[1-6][A-Z]$/;
+const GRADE_CLASS_PATTERN = /(?:[1-6][A-Z]|K[23]|P[1-6])/;
+const STUDENT_ID_PATTERN = new RegExp(`^${GRADE_CLASS_PATTERN.source}\\d{2}$`);
+const CLASS_CODE_PATTERN = new RegExp(`^${GRADE_CLASS_PATTERN.source}$`);
 
 export function normalizeStudentId(raw: string): string {
   return raw.trim().toUpperCase();
@@ -47,11 +48,11 @@ export function validateStudentId(raw: string): string | null {
   const normalized = normalizeStudentId(raw);
 
   if (normalized.length !== 4) {
-    return "請輸入 4 個字元（例如 4D01）。";
+    return "請輸入 4 個字元（例如 P101、4D01）。";
   }
 
   if (!STUDENT_ID_PATTERN.test(normalized)) {
-    return "格式：年級 1–6、英文字母、兩位數字（例如 4D01）。";
+    return "格式：P1–P6、K2/K3、或年級 1–6 加英文字母，再加兩位數字（例如 P101、4D01、K201）。";
   }
 
   return null;

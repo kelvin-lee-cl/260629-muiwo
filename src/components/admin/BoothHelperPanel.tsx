@@ -1,12 +1,16 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { SlideCarousel } from "@/components/student/SlideCarousel";
 import { bulkAwardBoothPoints, fetchBoothHelperData } from "@/lib/adminApi";
 import {
   boothTypeLabel,
+  normalizePosterImageUrl,
   type BoothDocument,
 } from "@/lib/booths";
+import { boothTypeStyles } from "@/lib/boothStyles";
 import {
   formatHelperVisitTime,
   type HelperCompletedVisit,
@@ -233,6 +237,8 @@ export function BoothHelperPanel({
         </div>
       </div>
 
+      <AdminVenuePreview booth={booth} />
+
       {error ? (
         <p className="rounded-xl bg-red-50 px-4 py-3 text-red-700" role="alert">
           {error}
@@ -360,6 +366,54 @@ export function BoothHelperPanel({
         </button>
       </section>
     </div>
+  );
+}
+
+function AdminVenuePreview({ booth }: { booth: BoothDocument }) {
+  const posterImageUrl = normalizePosterImageUrl(booth.posterImageUrl);
+  const styles = boothTypeStyles[booth.type];
+  const slides = booth.workshopSlides ?? [];
+  const hasDescription = booth.description.trim().length > 0;
+  const hasSlides = slides.some((slide) => slide.trim().length > 0);
+
+  if (!posterImageUrl && !hasDescription && !hasSlides) {
+    return null;
+  }
+
+  return (
+    <section className="space-y-6 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+      <h3 className="text-xl font-bold text-slate-900">Activity preview</h3>
+
+      {hasDescription ? (
+        <p className="whitespace-pre-wrap text-base leading-relaxed text-slate-700">
+          {booth.description}
+        </p>
+      ) : null}
+
+      {posterImageUrl ? (
+        <div
+          className={`overflow-hidden rounded-2xl border ${styles.posterFrame}`}
+        >
+          <Image
+            src={posterImageUrl}
+            alt={`${booth.title} poster`}
+            width={960}
+            height={540}
+            className="h-auto w-full object-cover"
+            priority
+          />
+        </div>
+      ) : null}
+
+      {hasSlides ? (
+        <SlideCarousel
+          slides={slides}
+          title="Workshop slides"
+          counterLabel="Slide"
+          className="mt-0"
+        />
+      ) : null}
+    </section>
   );
 }
 
